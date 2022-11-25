@@ -1,0 +1,24 @@
+version: "3.9" #Debemos respetar las tabulaciones y espacios, de lo contrario no va a funcionar
+services:
+  chanchito: 
+    build: . #misma ubicación donde se encuentra el Dockerfile (ubicación actual = .)
+    ports:
+      - "3000:3000" #Puerto de la maquina anfitriona(donde se instaló docker):puerto del contenedor
+    links:
+      - monguito #nombre del contenedor que queremos que utiliza lo que deseamos (en este caso, la base de datos)
+  monguito:
+    image: mongo #en base a que imagen la deseamos
+    ports:
+      - "27017:27017" #Puerto de la maquina anfitriona(donde se instaló docker):puerto del contenedor
+    environment: #colocamos las variables de entorno para que se ejecute correctamente
+      - MONGO_INITDB_ROOT_USERNAME=nico
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongo-data:/data/db #Donde por defecto guarda los datos mongo
+      # mysql -> /var/lib/mysql #Donde por defecto guarda los datos mySql
+      # postgres -> /var/lib/postgresql/data #Donde por defecto guarda los datos postgresql
+
+#No necesitamos especificar nada en mongo-data, porque compose sabe que hacer con ello
+volumes:
+  mongo-data:
+  #podemos crear otros volumenes

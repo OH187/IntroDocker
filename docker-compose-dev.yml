@@ -1,0 +1,27 @@
+version: "3.9" #Debemos respetar las tabulaciones, de lo contrario no va a funcionar
+services:
+  chanchito: 
+    build:
+      context: . #Indica donde estará trabajando (ruta actual)
+      dockerfile: Dockerfile.dev #Le decimos que debe crear la imagen utilizando el archivo de Dockerfile.dev
+    ports:
+      - "3000:3000" #Puerto de la maquina:puerto del contenedor
+    links:
+      - monguito
+    volumes:
+      - .:/home/app #volumen de tipo anonimo. Ldecimos que la ruta actual será montada en el volumen y especificamos la ruta de destino del contenedor
+  monguito:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=nico
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongo-data:/data/db
+      # mysql -> /var/lib/mysql
+      # postgres -> /var/lib/postgresql/data
+
+#No necesitamos especificar nada en mongo-data, porque compose sabe que hacer con ello
+volumes:
+  mongo-data:

@@ -1,0 +1,14 @@
+FROM node:18 
+
+#nodemon permite ver los cambios que se hacen (watch)
+RUN npm i -g nodemon 
+
+#crea la carpeta donde guardaremos los datos
+RUN mkdir -p /home/app
+
+#ruta en la que se estará trabajando, ya no es necesario hacerlo en los parametros en cmd
+WORKDIR /home/app
+
+EXPOSE 3000
+
+CMD ["nodemon", "index.js"]
